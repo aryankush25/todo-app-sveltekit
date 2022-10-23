@@ -2,14 +2,14 @@ import * as R from 'ramda';
 import request from '$lib/services/request';
 import { isPresent } from '$lib/utils/helpers';
 import { clearTokens, setTokens } from '$lib/utils/tokenHelper';
+import { ApiRequestMethods } from '$lib/utils/enums';
 
 const loginUserApi = async (email: string, password: string) => {
 	const route = 'users/login';
-	const method = 'POST';
 
 	const response = await request(
 		route,
-		method,
+		ApiRequestMethods.post,
 		{ 'Content-Type': 'application/json' },
 		{
 			email: email,
@@ -31,11 +31,10 @@ const loginUserApi = async (email: string, password: string) => {
 
 const registerUserApi = async (name: string, email: string, password: string) => {
 	const route = 'users';
-	const method = 'POST';
 
 	const response = await request(
 		route,
-		method,
+		ApiRequestMethods.post,
 		{ 'Content-Type': 'application/json' },
 		{
 			name: name,
@@ -58,9 +57,10 @@ const registerUserApi = async (name: string, email: string, password: string) =>
 
 const logoutCurrentUser = async () => {
 	const route = 'users/logout';
-	const method = 'POST';
 
-	const response = await request(route, method, { 'Content-Type': 'application/json' });
+	const response = await request(route, ApiRequestMethods.post, {
+		'Content-Type': 'application/json'
+	});
 
 	if (response.success) {
 		clearTokens();
@@ -71,9 +71,10 @@ const logoutCurrentUser = async () => {
 
 const logoutAllUser = async () => {
 	const route = 'users/logoutAll';
-	const method = 'POST';
 
-	const response = await request(route, method, { 'Content-Type': 'application/json' });
+	const response = await request(route, ApiRequestMethods.post, {
+		'Content-Type': 'application/json'
+	});
 
 	if (response.success) {
 		clearTokens();
@@ -84,20 +85,20 @@ const logoutAllUser = async () => {
 
 const getCurrentUserApi = async () => {
 	const route = 'users/me';
-	const method = 'GET';
 
-	const response = await request(route, method, { 'Content-Type': 'application/json' });
+	const response = await request(route, ApiRequestMethods.get, {
+		'Content-Type': 'application/json'
+	});
 
 	return response;
 };
 
 const setCurrentUserApi = async (name: string, age: string) => {
 	const route = 'users/me';
-	const method = 'PATCH';
 
 	const response = await request(
 		route,
-		method,
+		ApiRequestMethods.patch,
 		{ 'Content-Type': 'application/json' },
 		{ name, age }
 	);
@@ -107,39 +108,41 @@ const setCurrentUserApi = async (name: string, age: string) => {
 
 const getMyAvatar = async () => {
 	const route = 'user/me/avatar';
-	const method = 'GET';
 
-	const response = await request(route, method, { 'Content-Type': 'application/json' });
+	const response = await request(route, ApiRequestMethods.get, {
+		'Content-Type': 'application/json'
+	});
 
 	return response;
 };
 
 const deleteMyAvatar = async () => {
 	const route = 'user/me/avatar';
-	const method = 'DELETE';
 
-	const response = await request(route, method, { 'Content-Type': 'application/json' });
+	const response = await request(route, ApiRequestMethods.delete, {
+		'Content-Type': 'application/json'
+	});
 
 	return response;
 };
 
 const uploadMyAvatar = async (fileInput: File, name: string) => {
 	const route = 'user/me/avatar';
-	const method = 'POST';
 
 	const formData = new FormData();
 	formData.append('avatar', fileInput, name);
 
-	const response = await request(route, method, {}, formData);
+	const response = await request(route, ApiRequestMethods.post, {}, formData);
 
 	return response;
 };
 
 const deleteMyAccount = async () => {
 	const route = 'user/me';
-	const method = 'DELETE';
 
-	const response = await request(route, method, { 'Content-Type': 'application/json' });
+	const response = await request(route, ApiRequestMethods.delete, {
+		'Content-Type': 'application/json'
+	});
 
 	return response;
 };
