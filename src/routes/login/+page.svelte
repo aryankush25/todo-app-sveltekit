@@ -7,13 +7,13 @@
 	let apiState = AsyncStates.initial;
 
 	const handleSubmit = async () => {
-		try {
-			apiState = AsyncStates.inProgress;
+		apiState = AsyncStates.inProgress;
 
-			await userApis.loginUserApi(email, password);
+		const response = await userApis.loginUserApi(email, password);
 
+		if (response.success) {
 			apiState = AsyncStates.success;
-		} catch (error) {
+		} else {
 			apiState = AsyncStates.error;
 		}
 	};
