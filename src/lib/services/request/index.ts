@@ -1,12 +1,13 @@
 import * as R from 'ramda';
 import { clearTokens, getTokens } from '$lib/utils/tokenHelper';
 import { isPresent } from '$lib/utils/helpers';
+import type { ApiRequestMethods } from '$lib/utils/enums';
 
 const BASE_URL = 'https://task-manager-aryankush25.herokuapp.com/';
 
 const request = async (
 	route: string,
-	method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
+	method: ApiRequestMethods,
 	header: { [x: string]: string },
 	body?: unknown,
 	noAuth = false
