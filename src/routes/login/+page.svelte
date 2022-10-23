@@ -1,6 +1,7 @@
 <script lang="ts">
 	let name = '';
 	let password = '';
+	let;
 
 	function handleSubmit(event: SubmitEvent) {
 		console.log('Value', event);
