@@ -1,27 +1,52 @@
 <script lang="ts">
-	let name = '';
-	let password = '';
-	let;
+	import userApis from '$lib/services/modules/userApis';
+	import { AsyncStates } from '$lib/utils/enums';
 
-	function handleSubmit(event: SubmitEvent) {
-		console.log('Value', event);
-		console.log('event.target', event.target);
-		console.log({ name, password });
-	}
+	let email = 'aryan@gluelabs.com';
+	let password = 'test@123';
+	let apiState = AsyncStates.initial;
+
+	const handleSubmit = async () => {
+		try {
+			apiState = AsyncStates.inProgress;
+
+			await userApis.loginUserApi(email, password);
+
+			apiState = AsyncStates.success;
+		} catch (error) {
+			apiState = AsyncStates.error;
+		}
+	};
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
 	<div class="pb">
-		<label for="name">Full Name:</label><br />
-		<input type="text" id="name" name="name" bind:value={name} /><br />
+		<label for="email">Email:</label><br />
+		<input
+			type="text"
+			id="email"
+			name="email"
+			bind:value={email}
+			disabled={apiState === AsyncStates.inProgress}
+		/><br />
 	</div>
 
 	<div class="pb">
 		<label for="password">Password:</label><br />
-		<input type="password" id="password" name="password" bind:value={password} /><br />
+		<input
+			type="password"
+			id="password"
+			name="password"
+			bind:value={password}
+			disabled={apiState === AsyncStates.inProgress}
+		/><br />
 	</div>
 
-	<input type="submit" value="Submit" />
+	<input
+		type="submit"
+		value={apiState === AsyncStates.inProgress ? 'Logging in...' : 'Log in'}
+		disabled={apiState === AsyncStates.inProgress}
+	/>
 </form>
 
 <style>
