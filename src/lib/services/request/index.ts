@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { isNilOrEmpty } from '$lib/utils/helpers';
-// import { getLocalStorageTokens, clearLocalStorage } from '../utils/helper';
+import { clearTokens, getTokens } from '$lib/utils/tokenHelper';
 
 const BASE_URL = 'https://task-manager-aryankush25.herokuapp.com/';
 
@@ -18,8 +18,7 @@ const request = async (
 
 	if (isNilOrEmpty(noAuth)) {
 		// Get access token here
-		// const { accessToken } = getLocalStorageTokens();
-		const { accessToken } = { accessToken: '123' };
+		const { accessToken } = getTokens();
 
 		myHeaders = R.assoc('Authorization', `Bearer ${accessToken}`, myHeaders);
 	}
@@ -55,7 +54,8 @@ const request = async (
 
 			if (response.status === 401) {
 				// Clear tokens here and redirect to /login
-				// clearLocalStorage();
+				clearTokens();
+
 				window.location.replace('/login');
 			}
 
