@@ -2,12 +2,7 @@
 	import { page } from '$app/stores';
 	import logo from '$lib/images/svelte-logo.svg';
 	import github from '$lib/images/github.svg';
-
-	$: {
-		page.subscribe((page1) => {
-			console.log('#### page1', page1);
-		});
-	}
+	import { unProtectedRoutes } from '$lib/utils/constants';
 </script>
 
 <header>
@@ -22,15 +17,24 @@
 			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
 		</svg>
 		<ul>
-			<li class:active={$page.url.pathname === '/'}>
-				<a href="/">Home</a>
-			</li>
-			<li class:active={$page.url.pathname === '/about'}>
-				<a href="/about">About</a>
-			</li>
-			<li class:active={$page.url.pathname.startsWith('/sverdle')}>
-				<a href="/sverdle">Sverdle</a>
-			</li>
+			{#if unProtectedRoutes.includes($page.url.pathname)}
+				<li class:active={$page.url.pathname === '/login'}>
+					<a href="/login">Login</a>
+				</li>
+				<li class:active={$page.url.pathname === '/register'}>
+					<a href="/register">Register</a>
+				</li>
+			{:else}
+				<li class:active={$page.url.pathname === '/'}>
+					<a href="/">Home</a>
+				</li>
+				<li class:active={$page.url.pathname === '/about'}>
+					<a href="/about">About</a>
+				</li>
+				<li class:active={$page.url.pathname.startsWith('/sverdle')}>
+					<a href="/sverdle">Sverdle</a>
+				</li>
+			{/if}
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
@@ -38,7 +42,7 @@
 	</nav>
 
 	<div class="corner">
-		<a href="https://github.com/sveltejs/kit">
+		<a href="https://github.com/aryankush25">
 			<img src={github} alt="GitHub" />
 		</a>
 	</div>

@@ -11,7 +11,11 @@
 	</main>
 
 	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+		<p>
+			Visit <a href="https://github.com/aryankush25/todo-app-sveltekit"
+				>aryankush25/todo-app-sveltekit</a
+			> to checkout source code of this app.
+		</p>
 	</footer>
 </div>
 
