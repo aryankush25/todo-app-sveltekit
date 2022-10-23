@@ -1,6 +1,6 @@
 import * as R from 'ramda';
-import { isNilOrEmpty } from '$lib/utils/helpers';
 import { clearTokens, getTokens } from '$lib/utils/tokenHelper';
+import { isPresent } from '$lib/utils/helpers';
 
 const BASE_URL = 'https://task-manager-aryankush25.herokuapp.com/';
 
@@ -8,15 +8,15 @@ const request = async (
 	route: string,
 	method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
 	header: { [x: string]: string },
-	body: unknown,
-	noAuth: boolean
+	body?: unknown,
+	noAuth = false
 ) => {
 	let myHeaders = {};
 	const headerKeys = R.keys(header) as string[];
 
 	myHeaders = R.assoc('Accept', '*/*', myHeaders);
 
-	if (isNilOrEmpty(noAuth)) {
+	if (noAuth) {
 		// Get access token here
 		const { accessToken } = getTokens();
 
@@ -27,7 +27,7 @@ const request = async (
 		myHeaders = R.assoc(headerKey, header[headerKey], myHeaders);
 	});
 
-	const raw = JSON.stringify(body);
+	const raw = isPresent(body) ? JSON.stringify(body) : null;
 
 	const requestOptions = {
 		method: method,
