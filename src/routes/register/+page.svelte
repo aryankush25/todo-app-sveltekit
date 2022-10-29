@@ -3,6 +3,7 @@
 	import userApis from '$lib/services/modules/userApis';
 	import { AsyncStates } from '$lib/utils/enums';
 	import { isPresent } from '$lib/utils/helpers';
+	import { goto } from '$app/navigation';
 
 	let name = 'Aryan Agarwal';
 	let email = 'aryan@gluelabs.com';
@@ -17,6 +18,7 @@
 
 		if (response.success) {
 			apiState = AsyncStates.success;
+			goto('/');
 		} else {
 			apiState = AsyncStates.error;
 			errorMsg = R.pathOr('', ['error', 'message'], response);
