@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import { isPresent } from '$lib/utils/helpers';
 
-const ACCESS_TOKEN = 'fifo-access-token';
+export const ACCESS_TOKEN = 'fifo-access-token';
 
 const getCookie = (cookieName: string) => {
 	const name = cookieName + '=';
