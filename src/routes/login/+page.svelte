@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import userApis from '$lib/services/modules/userApis';
 	import { AsyncStates } from '$lib/utils/enums';
 
@@ -13,6 +14,7 @@
 
 		if (response.success) {
 			apiState = AsyncStates.success;
+			goto('/');
 		} else {
 			apiState = AsyncStates.error;
 		}
