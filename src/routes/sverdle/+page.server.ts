@@ -1,13 +1,10 @@
 import { invalid, redirect } from '@sveltejs/kit';
 import { words, allowed } from './words.server';
 import type { PageServerLoad, Actions } from './$types';
-import { ACCESS_TOKEN } from '$lib/utils/tokenHelper';
 import { isNilOrEmpty } from '$lib/utils/helpers';
 
-export const load: PageServerLoad = ({ cookies }) => {
-	const accessToken = cookies.get(ACCESS_TOKEN);
-
-	if (isNilOrEmpty(accessToken)) {
+export const load: PageServerLoad = ({ cookies, locals }) => {
+	if (isNilOrEmpty(locals.accessToken)) {
 		throw redirect(307, '/login');
 	}
 
