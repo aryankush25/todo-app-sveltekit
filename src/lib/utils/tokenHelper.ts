@@ -32,9 +32,7 @@ export const getTokens = () => {
 	return tokens;
 };
 
-export const isTokenPresent = () => {
-	const { accessToken } = getTokens();
-
+export const isTokenPresent = ({ accessToken } = getTokens()) => {
 	const isTokenUndefined = accessToken === 'undefined';
 
 	return isPresent(accessToken) && !isTokenUndefined;
