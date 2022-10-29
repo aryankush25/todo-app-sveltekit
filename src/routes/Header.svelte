@@ -2,7 +2,24 @@
 	import { page } from '$app/stores';
 	import logo from '$lib/images/svelte-logo.svg';
 	import github from '$lib/images/github.svg';
-	import { unProtectedRoutes } from '$lib/utils/constants';
+	import { protectedRoutes, unProtectedRoutes } from '$lib/utils/constants';
+	import { isTokenPresent } from '$lib/utils/tokenHelper';
+	import { onMount, beforeUpdate } from 'svelte';
+
+	let isProtectedPage = protectedRoutes.includes($page.url.pathname);
+	let isUnProtectedPage = unProtectedRoutes.includes($page.url.pathname);
+	let isLoggedIn = false;
+
+	$: {
+		isProtectedPage = protectedRoutes.includes($page.url.pathname);
+		isUnProtectedPage = unProtectedRoutes.includes($page.url.pathname);
+	}
+
+	$: isOpenRoute = !isUnProtectedPage && !isProtectedPage;
+
+	beforeUpdate(() => {
+		isLoggedIn = isTokenPresent();
+	});
 </script>
 
 <header>
@@ -17,24 +34,24 @@
 			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
 		</svg>
 		<ul>
-			{#if unProtectedRoutes.includes($page.url.pathname)}
+			{#if isProtectedPage || (isLoggedIn && isOpenRoute)}
+				<li class:active={$page.url.pathname === '/'}>
+					<a href="/">Home</a>
+				</li>
+				<li class:active={$page.url.pathname.startsWith('/sverdle')}>
+					<a href="/sverdle">Sverdle</a>
+				</li>
+			{:else}
 				<li class:active={$page.url.pathname === '/login'}>
 					<a href="/login">Login</a>
 				</li>
 				<li class:active={$page.url.pathname === '/register'}>
 					<a href="/register">Register</a>
 				</li>
-			{:else}
-				<li class:active={$page.url.pathname === '/'}>
-					<a href="/">Home</a>
-				</li>
-				<li class:active={$page.url.pathname === '/about'}>
-					<a href="/about">About</a>
-				</li>
-				<li class:active={$page.url.pathname.startsWith('/sverdle')}>
-					<a href="/sverdle">Sverdle</a>
-				</li>
 			{/if}
+			<li class:active={$page.url.pathname === '/about'}>
+				<a href="/about">About</a>
+			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
