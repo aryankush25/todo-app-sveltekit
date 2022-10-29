@@ -4,16 +4,18 @@
 	import github from '$lib/images/github.svg';
 	import { protectedRoutes, unProtectedRoutes } from '$lib/utils/constants';
 	import { isTokenPresent } from '$lib/utils/tokenHelper';
-	import { onMount, beforeUpdate } from 'svelte';
+	import { beforeUpdate } from 'svelte';
 
 	let isProtectedPage = protectedRoutes.includes($page.url.pathname);
 	let isUnProtectedPage = unProtectedRoutes.includes($page.url.pathname);
-	let isLoggedIn = false;
+	let isLoggedIn = isTokenPresent({ accessToken: $page.data.accessToken });
 
 	$: {
 		isProtectedPage = protectedRoutes.includes($page.url.pathname);
 		isUnProtectedPage = unProtectedRoutes.includes($page.url.pathname);
 	}
+
+	$: console.log($page.data.accessToken);
 
 	$: isOpenRoute = !isUnProtectedPage && !isProtectedPage;
 

@@ -1,5 +1,6 @@
 <script>
-	import Header from './Header.svelte';
+	import Header from '$lib/components/Header.svelte';
+
 	import './styles.css';
 </script>
 
