@@ -1,13 +1,8 @@
-import { invalid, redirect } from '@sveltejs/kit';
+import { invalid } from '@sveltejs/kit';
 import { words, allowed } from './words.server';
 import type { PageServerLoad, Actions } from './$types';
-import { isNilOrEmpty } from '$lib/utils/helpers';
 
-export const load: PageServerLoad = ({ cookies, locals }) => {
-	if (isNilOrEmpty(locals.accessToken)) {
-		throw redirect(307, '/login');
-	}
-
+export const load: PageServerLoad = ({ cookies }) => {
 	const game = new Game(cookies.get('sverdle'));
 
 	return {
