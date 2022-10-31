@@ -37,7 +37,6 @@
 				name="email"
 				class="block w-full rounded-md border-gray-300 px-5 focus:border-primary focus:ring-primary sm:text-sm"
 				bind:value={email}
-				disabled={apiState === AsyncStates.inProgress}
 			/>
 		</div>
 	</div>
@@ -52,7 +51,6 @@
 				name="password"
 				class="block w-full rounded-md border-gray-300 px-5 focus:border-primary focus:ring-primary sm:text-sm"
 				bind:value={password}
-				disabled={apiState === AsyncStates.inProgress}
 			/>
 		</div>
 	</div>
@@ -60,8 +58,12 @@
 	<input
 		type="submit"
 		class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-		value={apiState === AsyncStates.inProgress ? 'Logging in...' : 'Log in'}
-		disabled={apiState === AsyncStates.inProgress}
+		value={apiState === AsyncStates.inProgress
+			? 'Logging in...'
+			: apiState === AsyncStates.success
+			? 'Redirecting...'
+			: 'Log in'}
+		disabled={[AsyncStates.inProgress, AsyncStates.success].includes(apiState)}
 		class:cursor-not-allowed={apiState === AsyncStates.inProgress}
 		class:bg-primary={apiState === AsyncStates.inProgress}
 		class:text-white={apiState === AsyncStates.inProgress}

@@ -34,35 +34,17 @@
 <form on:submit|preventDefault={handleSubmit}>
 	<div class="pb">
 		<label for="name">Full name:</label><br />
-		<input
-			type="text"
-			id="name"
-			name="name"
-			bind:value={name}
-			disabled={apiState === AsyncStates.inProgress}
-		/><br />
+		<input type="text" id="name" name="name" bind:value={name} /><br />
 	</div>
 
 	<div class="pb">
 		<label for="email">Email:</label><br />
-		<input
-			type="text"
-			id="email"
-			name="email"
-			bind:value={email}
-			disabled={apiState === AsyncStates.inProgress}
-		/><br />
+		<input type="text" id="email" name="email" bind:value={email} /><br />
 	</div>
 
 	<div class="pb">
 		<label for="password">Password:</label><br />
-		<input
-			type="password"
-			id="password"
-			name="password"
-			bind:value={password}
-			disabled={apiState === AsyncStates.inProgress}
-		/><br />
+		<input type="password" id="password" name="password" bind:value={password} /><br />
 	</div>
 
 	{#if apiState === AsyncStates.error && isPresent(errorMsg)}
@@ -73,8 +55,12 @@
 
 	<input
 		type="submit"
-		value={apiState === AsyncStates.inProgress ? 'Registering...' : 'Register'}
-		disabled={apiState === AsyncStates.inProgress}
+		value={apiState === AsyncStates.inProgress
+			? 'Registering...'
+			: apiState === AsyncStates.success
+			? 'Redirecting...'
+			: 'Register'}
+		disabled={[AsyncStates.inProgress, AsyncStates.success].includes(apiState)}
 	/>
 </form>
 
