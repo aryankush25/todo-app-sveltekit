@@ -15,8 +15,6 @@
 		isUnProtectedPage = unProtectedRoutes.includes($page.url.pathname);
 	}
 
-	$: console.log($page.data.accessToken);
-
 	$: isOpenRoute = !isUnProtectedPage && !isProtectedPage;
 
 	beforeUpdate(() => {
