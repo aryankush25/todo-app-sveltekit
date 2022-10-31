@@ -21,6 +21,11 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Login</title>
+	<meta name="description" content="Login" />
+</svelte:head>
+
 <form on:submit|preventDefault={handleSubmit} class="flex justify-center flex-col items-center">
 	<div class="pb-3.5">
 		<label for="email" class="block text-sm font-medium text-gray-700">Email</label>

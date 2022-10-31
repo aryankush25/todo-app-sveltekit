@@ -26,6 +26,11 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Register</title>
+	<meta name="description" content="Register" />
+</svelte:head>
+
 <form on:submit|preventDefault={handleSubmit}>
 	<div class="pb">
 		<label for="name">Full name:</label><br />
