@@ -1,3 +1,4 @@
+// import { Blob } from 'buffer';
 import * as R from 'ramda';
 import { clearTokens, getTokens } from '$lib/utils/tokenHelper';
 import { isPresent } from '$lib/utils/helpers';
@@ -8,18 +9,29 @@ const BASE_URL = 'https://task-manager-aryankush25.herokuapp.com/';
 const request = async (
 	route: string,
 	method: ApiRequestMethods,
-	header: { [x: string]: string },
-	body?: unknown,
-	noAuth = false
-) => {
+	{
+		header = { 'Content-Type': 'application/json' },
+		body,
+		auth = true,
+		authToken
+	}: {
+		header?: { [x: string]: string };
+		body?: unknown;
+		auth?: boolean;
+		authToken?: string;
+	} = {}
+): Promise<{
+	success: boolean;
+	data?: unknown;
+	error?: unknown;
+}> => {
 	let myHeaders = {};
 	const headerKeys = R.keys(header) as string[];
 
 	myHeaders = R.assoc('Accept', '*/*', myHeaders);
 
-	if (noAuth) {
-		// Get access token here
-		const { accessToken } = getTokens();
+	if (auth) {
+		const accessToken = authToken ? authToken : getTokens().accessToken;
 
 		myHeaders = R.assoc('Authorization', `Bearer ${accessToken}`, myHeaders);
 	}
@@ -65,12 +77,12 @@ const request = async (
 		.then((result) => {
 			console.info(`Result of ${route}`, result);
 
-			if (result instanceof Blob) {
-				return {
-					success: true,
-					data: URL.createObjectURL(result)
-				};
-			}
+			// if (result instanceof Blob) {
+			// 	return {
+			// 		success: true,
+			// 		data: URL.createObjectURL(result)
+			// 	};
+			// }1
 
 			return {
 				success: true,

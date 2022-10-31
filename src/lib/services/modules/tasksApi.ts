@@ -4,25 +4,17 @@ import request from '../request';
 const createTasks = async (description: string, completed: string) => {
 	const url = 'tasks';
 
-	const response = await request(
-		url,
-		ApiRequestMethods.post,
-		{ 'Content-Type': 'application/json' },
-		{
-			description,
-			completed
-		}
-	);
+	const response = await request(url, ApiRequestMethods.post, {
+		body: { description, completed }
+	});
 
 	return response;
 };
 
-const getTasks = async () => {
+const getTasks = async (authToken?: string) => {
 	const url = 'tasks';
 
-	const response = await request(url, ApiRequestMethods.get, {
-		'Content-Type': 'application/json'
-	});
+	const response = await request(url, ApiRequestMethods.get, { authToken });
 
 	return response;
 };
@@ -30,9 +22,7 @@ const getTasks = async () => {
 const getTask = async (taskId: string) => {
 	const url = `tasks/${taskId}`;
 
-	const response = await request(url, ApiRequestMethods.get, {
-		'Content-Type': 'application/json'
-	});
+	const response = await request(url, ApiRequestMethods.get);
 
 	return response;
 };
@@ -40,12 +30,7 @@ const getTask = async (taskId: string) => {
 const updateTask = async (taskId: string, updatedData: unknown) => {
 	const url = `tasks/${taskId}`;
 
-	const response = await request(
-		url,
-		ApiRequestMethods.patch,
-		{ 'Content-Type': 'application/json' },
-		updatedData
-	);
+	const response = await request(url, ApiRequestMethods.patch, { body: updatedData });
 
 	return response;
 };
@@ -53,9 +38,7 @@ const updateTask = async (taskId: string, updatedData: unknown) => {
 const deleteTask = async (taskId: string) => {
 	const url = `tasks/${taskId}`;
 
-	const response = await request(url, ApiRequestMethods.delete, {
-		'Content-Type': 'application/json'
-	});
+	const response = await request(url, ApiRequestMethods.delete);
 
 	return response;
 };

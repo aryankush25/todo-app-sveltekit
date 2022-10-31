@@ -7,16 +7,10 @@ import { ApiRequestMethods } from '$lib/utils/enums';
 const loginUserApi = async (email: string, password: string) => {
 	const route = 'users/login';
 
-	const response = await request(
-		route,
-		ApiRequestMethods.post,
-		{ 'Content-Type': 'application/json' },
-		{
-			email: email,
-			password: password
-		},
-		true
-	);
+	const response = await request(route, ApiRequestMethods.post, {
+		body: { email, password },
+		auth: false
+	});
 
 	const token = R.pathOr('', ['data', 'token'], response);
 
@@ -32,17 +26,10 @@ const loginUserApi = async (email: string, password: string) => {
 const registerUserApi = async (name: string, email: string, password: string) => {
 	const route = 'users';
 
-	const response = await request(
-		route,
-		ApiRequestMethods.post,
-		{ 'Content-Type': 'application/json' },
-		{
-			name: name,
-			email: email,
-			password: password
-		},
-		true
-	);
+	const response = await request(route, ApiRequestMethods.post, {
+		body: { name, email, password },
+		auth: false
+	});
 
 	const token = R.pathOr('', ['data', 'token'], response);
 
@@ -58,9 +45,7 @@ const registerUserApi = async (name: string, email: string, password: string) =>
 const logoutCurrentUser = async () => {
 	const route = 'users/logout';
 
-	const response = await request(route, ApiRequestMethods.post, {
-		'Content-Type': 'application/json'
-	});
+	const response = await request(route, ApiRequestMethods.post);
 
 	if (response.success) {
 		clearTokens();
@@ -72,9 +57,7 @@ const logoutCurrentUser = async () => {
 const logoutAllUser = async () => {
 	const route = 'users/logoutAll';
 
-	const response = await request(route, ApiRequestMethods.post, {
-		'Content-Type': 'application/json'
-	});
+	const response = await request(route, ApiRequestMethods.post);
 
 	if (response.success) {
 		clearTokens();
@@ -86,9 +69,7 @@ const logoutAllUser = async () => {
 const getCurrentUserApi = async () => {
 	const route = 'users/me';
 
-	const response = await request(route, ApiRequestMethods.get, {
-		'Content-Type': 'application/json'
-	});
+	const response = await request(route, ApiRequestMethods.get);
 
 	return response;
 };
@@ -96,12 +77,7 @@ const getCurrentUserApi = async () => {
 const setCurrentUserApi = async (name: string, age: string) => {
 	const route = 'users/me';
 
-	const response = await request(
-		route,
-		ApiRequestMethods.patch,
-		{ 'Content-Type': 'application/json' },
-		{ name, age }
-	);
+	const response = await request(route, ApiRequestMethods.patch, { body: { name, age } });
 
 	return response;
 };
@@ -109,9 +85,7 @@ const setCurrentUserApi = async (name: string, age: string) => {
 const getMyAvatar = async () => {
 	const route = 'user/me/avatar';
 
-	const response = await request(route, ApiRequestMethods.get, {
-		'Content-Type': 'application/json'
-	});
+	const response = await request(route, ApiRequestMethods.get);
 
 	return response;
 };
@@ -119,9 +93,7 @@ const getMyAvatar = async () => {
 const deleteMyAvatar = async () => {
 	const route = 'user/me/avatar';
 
-	const response = await request(route, ApiRequestMethods.delete, {
-		'Content-Type': 'application/json'
-	});
+	const response = await request(route, ApiRequestMethods.delete);
 
 	return response;
 };
@@ -132,7 +104,7 @@ const uploadMyAvatar = async (fileInput: File, name: string) => {
 	const formData = new FormData();
 	formData.append('avatar', fileInput, name);
 
-	const response = await request(route, ApiRequestMethods.post, {}, formData);
+	const response = await request(route, ApiRequestMethods.post, { header: {}, body: formData });
 
 	return response;
 };
@@ -140,9 +112,7 @@ const uploadMyAvatar = async (fileInput: File, name: string) => {
 const deleteMyAccount = async () => {
 	const route = 'user/me';
 
-	const response = await request(route, ApiRequestMethods.delete, {
-		'Content-Type': 'application/json'
-	});
+	const response = await request(route, ApiRequestMethods.delete);
 
 	return response;
 };
